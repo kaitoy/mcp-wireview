@@ -1,0 +1,93 @@
+body {
+  font-family: var(--vscode-font-family);
+  font-size: var(--vscode-font-size);
+  color: var(--vscode-foreground);
+  background-color: var(--vscode-editor-background);
+  padding: 0;
+  margin: 0;
+}
+
+.app-container {
+  padding: 20px;
+}
+
+#root {
+  width: 100%;
+  height: 100%;
+}
+
+h1 {
+  font-size: 1.5em;
+  margin-bottom: 20px;
+  color: var(--vscode-foreground);
+  border-bottom: 1px solid var(--vscode-panel-border);
+  padding-bottom: 10px;
+}
+
+.section {
+  margin-bottom: 30px;
+}
+
+.section-title {
+  font-size: 1.2em;
+  font-weight: bold;
+  margin-bottom: 10px;
+  color: var(--vscode-textLink-foreground);
+}
+
+.section-title.error {
+  color: var(--vscode-errorForeground);
+}
+
+.code-block {
+  background-color: var(--vscode-textCodeBlock-background);
+  border: 1px solid var(--vscode-panel-border);
+  border-radius: 4px;
+  padding: 15px;
+  overflow-x: auto;
+  font-family: var(--vscode-editor-font-family);
+  font-size: var(--vscode-editor-font-size);
+}
+
+.error-block {
+  background-color: var(--vscode-inputValidation-errorBackground);
+  border: 1px solid var(--vscode-inputValidation-errorBorder);
+  color: var(--vscode-errorForeground);
+  border-radius: 4px;
+  padding: 15px;
+  margin-bottom: 20px;
+}
+
+.event-item {
+  margin-bottom: 20px;
+}
+
+.event-header {
+  font-weight: bold;
+  margin-bottom: 8px;
+  color: var(--vscode-textLink-activeForeground);
+}
+
+.events-summary {
+  background-color: var(--vscode-badge-background);
+  color: var(--vscode-badge-foreground);
+  padding: 8px 12px;
+  border-radius: 4px;
+  display: inline-block;
+  margin-bottom: 15px;
+}
+
+#events-container {
+  margin-top: 15px;
+}
+
+/* react-json-tree overrides to match VSCode theme */
+ul.react-json-tree {
+  background-color: transparent !important;
+  margin: 0;
+  padding: 0;
+}
+
+.react-json-tree li {
+  line-height: 1.6;
+}

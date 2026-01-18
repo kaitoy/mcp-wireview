@@ -1,0 +1,102 @@
+{
+  "name": "mcp-wireview",
+  "displayName": "MCP WireView",
+  "description": "A VSCode extension for visualizing MCP (Model Context Protocol) messages with an interactive JSON viewer",
+  "version": "0.0.1",
+  "engines": {
+    "vscode": "^1.98.0"
+  },
+  "author": {
+    "name": "Kaito Yamada"
+  },
+  "publisher": "kaitoy",
+  "license": "SEE LICENSE IN LICENSE",
+  "categories": [
+    "Other",
+    "AI",
+    "Debuggers",
+    "Testing"
+  ],
+  "keywords": [
+    "mcp",
+    "vscode-extension",
+    "debugging"
+  ],
+  "icon": "logo/logo.png",
+  "homepage": "https://github.com/kaitoy/mcp-wireview/blob/master/README.md",
+  "bugs": {
+    "url": "https://github.com/kaitoy/mcp-wireview/issues"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/kaitoy/mcp-wireview.git"
+  },
+  "activationEvents": [],
+  "main": "./out/extension.js",
+  "contributes": {
+    "commands": [
+      {
+        "command": "mcp.setserverURL",
+        "title": "MCP: Set Server URL"
+      },
+      {
+        "command": "mcp.uninitialize",
+        "title": "MCP: Uninitialize"
+      },
+      {
+        "command": "mcp.sendRequest",
+        "title": "MCP: Send Custom JSON Request"
+      },
+      {
+        "command": "mcp.initialize",
+        "title": "MCP: Send Initialize Request"
+      },
+      {
+        "command": "mcp.listTools",
+        "title": "MCP: List Tools"
+      },
+      {
+        "command": "mcp.listPrompts",
+        "title": "MCP: List Prompts"
+      },
+      {
+        "command": "mcp.listResources",
+        "title": "MCP: List Resources"
+      },
+      {
+        "command": "mcp.callTool",
+        "title": "MCP: Call Tool"
+      }
+    ],
+    "configuration": {
+      "title": "MCP WireView",
+      "properties": {
+        "mcp.serverURL": {
+          "type": "string",
+          "default": "",
+          "description": "URL of the MCP server to connect to (e.g., http://localhost:3000/mcp)"
+        }
+      }
+    }
+  },
+  "scripts": {
+    "vscode:prepublish": "npm run compile",
+    "compile": "npm run compile:extension && npm run compile:webview",
+    "compile:extension": "tsc -p ./",
+    "compile:webview": "cd src/webview-ui && npm run build",
+    "watch": "npm run watch:extension",
+    "watch:extension": "tsc -watch -p ./",
+    "watch:webview": "cd src/webview-ui && npm run dev",
+    "install:webview": "cd src/webview-ui && npm install",
+    "pretest": "npm run compile && npm run lint",
+    "lint": "eslint src --ext ts"
+  },
+  "devDependencies": {
+    "@types/vscode": "^1.85.0",
+    "@types/node": "20.x",
+    "@typescript-eslint/eslint-plugin": "^6.13.0",
+    "@typescript-eslint/parser": "^6.13.0",
+    "eslint": "^8.54.0",
+    "typescript": "^5.3.2"
+  }
+}

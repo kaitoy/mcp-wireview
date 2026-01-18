@@ -1,0 +1,20 @@
+export const vscodeTheme = {
+  scheme: 'vscode',
+  author: 'vscode',
+  base00: 'var(--vscode-editor-background)',
+  base01: 'var(--vscode-editor-background)',
+  base02: 'var(--vscode-input-background)',
+  base03: 'var(--vscode-descriptionForeground)',
+  base04: 'var(--vscode-foreground)',
+  base05: 'var(--vscode-foreground)',
+  base06: 'var(--vscode-foreground)',
+  base07: 'var(--vscode-foreground)',
+  base08: 'var(--vscode-errorForeground)',
+  base09: 'var(--vscode-debugTokenExpression-number)',
+  base0A: 'var(--vscode-debugTokenExpression-boolean)',
+  base0B: 'var(--vscode-debugTokenExpression-string)',
+  base0C: 'var(--vscode-debugTokenExpression-name)',
+  base0D: 'var(--vscode-symbolIcon-functionForeground)',
+  base0E: 'var(--vscode-debugTokenExpression-name)',
+  base0F: 'var(--vscode-debugTokenExpression-error)'
+};
