@@ -6,6 +6,7 @@ export class MCPClient {
   private initializeRequestId: string | number | null = null;
   private protocolVersion: string | null = null;
   private sessionId: string | null = null;
+  private customHeaders: Record<string, string> = {};
 
   isConnected(): boolean {
     return this.serverURL !== null;
@@ -21,6 +22,14 @@ export class MCPClient {
 
   connect(url: string): void {
     this.serverURL = url;
+  }
+
+  setCustomHeaders(headers: Record<string, string>): void {
+    this.customHeaders = { ...headers };
+  }
+
+  getCustomHeaders(): Record<string, string> {
+    return { ...this.customHeaders };
   }
 
   uninitialize(): void {
@@ -51,6 +60,7 @@ export class MCPClient {
       const headers: Record<string, string> = {
         'Content-Type': 'application/json',
         Accept: 'application/json, text/event-stream',
+        ...this.customHeaders, // Add custom headers
       };
 
       // Include protocolVersion in headers if set (except for notifications/initialized)
@@ -124,6 +134,7 @@ export class MCPClient {
       const headers: Record<string, string> = {
         'Content-Type': 'application/json',
         Accept: 'application/json, text/event-stream',
+        ...this.customHeaders, // Add custom headers
       };
 
       // Include protocolVersion and sessionId in headers after initialize request
@@ -278,6 +289,7 @@ export class MCPClient {
 
       const headers: Record<string, string> = {
         'Content-Type': 'application/json',
+        ...this.customHeaders, // Add custom headers
       };
 
       // Include protocolVersion in headers if set

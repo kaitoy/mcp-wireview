@@ -61,10 +61,16 @@ export class MCPCommands {
   public initializeFromSettings(): void {
     const config = vscode.workspace.getConfiguration('mcp');
     const serverURL = config.get<string>('serverURL');
+    const customHeaders = config.get<Record<string, string>>('customHeaders') || {};
 
     if (serverURL && serverURL.trim() !== '') {
       this.client.connect(serverURL);
       this.outputChannel.appendLine(`Loaded server URL from settings: ${serverURL}`);
+    }
+
+    if (Object.keys(customHeaders).length > 0) {
+      this.client.setCustomHeaders(customHeaders);
+      this.outputChannel.appendLine(`Loaded custom headers from settings: ${JSON.stringify(customHeaders)}`);
     }
 
     // Always update status bar
@@ -101,6 +107,55 @@ export class MCPCommands {
       this.updateStatusBar();
       vscode.window.showInformationMessage(`MCP server URL set: ${url}`);
       this.outputChannel.appendLine(`Server URL saved to settings: ${url}`);
+    }
+  }
+
+  async setCustomHeaders(): Promise<void> {
+    const config = vscode.workspace.getConfiguration('mcp');
+    const currentHeaders = config.get<Record<string, string>>('customHeaders') || {};
+
+    const headersJson = await vscode.window.showInputBox({
+      prompt: 'Enter custom HTTP headers as JSON object',
+      placeHolder: '{"Authorization": "Bearer token", "X-Custom-Header": "value"}',
+      value: Object.keys(currentHeaders).length > 0 ? JSON.stringify(currentHeaders) : '',
+      validateInput: (value) => {
+        if (!value || value.trim() === '') {
+          return null; // Empty is allowed (clears headers)
+        }
+        try {
+          const parsed = JSON.parse(value);
+          if (typeof parsed !== 'object' || Array.isArray(parsed)) {
+            return 'Must be a JSON object';
+          }
+          // Validate all values are strings
+          for (const key in parsed) {
+            if (typeof parsed[key] !== 'string') {
+              return 'All header values must be strings';
+            }
+          }
+          return null;
+        } catch {
+          return 'Invalid JSON format';
+        }
+      }
+    });
+
+    if (headersJson !== undefined) {
+      const headers = headersJson.trim() === '' ? {} : JSON.parse(headersJson);
+
+      // Save to settings
+      await config.update('customHeaders', headers, vscode.ConfigurationTarget.Global);
+
+      // Update client
+      this.client.setCustomHeaders(headers);
+
+      if (Object.keys(headers).length > 0) {
+        vscode.window.showInformationMessage(`Custom headers set: ${JSON.stringify(headers)}`);
+        this.outputChannel.appendLine(`Custom headers saved to settings: ${JSON.stringify(headers)}`);
+      } else {
+        vscode.window.showInformationMessage('Custom headers cleared');
+        this.outputChannel.appendLine('Custom headers cleared from settings');
+      }
     }
   }
 

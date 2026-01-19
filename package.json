@@ -2,7 +2,7 @@
   "name": "mcp-wireview",
   "displayName": "MCP WireView",
   "description": "A VSCode extension for visualizing MCP (Model Context Protocol) messages with an interactive JSON viewer",
-  "version": "0.0.1",
+  "version": "0.1.0",
   "engines": {
     "vscode": "^1.98.0"
   },
@@ -40,6 +40,10 @@
         "title": "MCP: Set Server URL"
       },
       {
+        "command": "mcp.setCustomHeaders",
+        "title": "MCP: Set Custom HTTP Headers"
+      },
+      {
         "command": "mcp.uninitialize",
         "title": "MCP: Uninitialize"
       },
@@ -75,6 +79,14 @@
           "type": "string",
           "default": "",
           "description": "URL of the MCP server to connect to (e.g., http://localhost:3000/mcp)"
+        },
+        "mcp.customHeaders": {
+          "type": "object",
+          "default": {},
+          "description": "Custom HTTP headers to send with all MCP requests (e.g., {\"Authorization\": \"Bearer token\", \"X-Custom-Header\": \"value\"})",
+          "additionalProperties": {
+            "type": "string"
+          }
         }
       }
     }

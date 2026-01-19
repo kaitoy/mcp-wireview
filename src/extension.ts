@@ -21,6 +21,7 @@ export function activate(context: vscode.ExtensionContext) {
 
   const disposables = [
     vscode.commands.registerCommand('mcp.setserverURL', () => commands.setserverURL()),
+    vscode.commands.registerCommand('mcp.setCustomHeaders', () => commands.setCustomHeaders()),
     vscode.commands.registerCommand('mcp.uninitialize', () => commands.uninitialize()),
     vscode.commands.registerCommand('mcp.sendRequest', () => commands.sendCustomRequest()),
     vscode.commands.registerCommand('mcp.initialize', () => commands.initialize()),
