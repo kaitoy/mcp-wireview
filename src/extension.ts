@@ -37,6 +37,15 @@ export function activate(context: vscode.ExtensionContext) {
 
   // Initialize from settings
   commands.initializeFromSettings();
+
+  // Watch for configuration changes
+  const configChangeListener = vscode.workspace.onDidChangeConfiguration((e) => {
+    if (e.affectsConfiguration('mcp.serverURL') || e.affectsConfiguration('mcp.customHeaders')) {
+      commands.initializeFromSettings();
+      outputChannel.appendLine('Configuration changed - settings reloaded');
+    }
+  });
+  context.subscriptions.push(configChangeListener);
 }
 
 export function deactivate() {

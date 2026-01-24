@@ -68,9 +68,12 @@ export class MCPCommands {
       this.outputChannel.appendLine(`Loaded server URL from settings: ${serverURL}`);
     }
 
+    // Always set custom headers, even if empty (to clear previous headers)
+    this.client.setCustomHeaders(customHeaders);
     if (Object.keys(customHeaders).length > 0) {
-      this.client.setCustomHeaders(customHeaders);
       this.outputChannel.appendLine(`Loaded custom headers from settings: ${JSON.stringify(customHeaders)}`);
+    } else {
+      this.outputChannel.appendLine(`Custom headers cleared from settings`);
     }
 
     // Always update status bar
