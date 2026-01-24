@@ -1,5 +1,5 @@
 import { randomUUID } from 'crypto';
-import { JSONRPCRequest, JSONRPCResponse } from './types';
+import { JSONRPCRequest, JSONRPCResponse, HTTPInfo } from './types';
 
 export class MCPClient {
   private serverURL: string | null = null;
@@ -100,7 +100,8 @@ export class MCPClient {
     params?: any,
     onEvent?: (response: JSONRPCResponse) => void,
     requestId?: string | number,
-    onBeforeSend?: (request: JSONRPCRequest) => void
+    onBeforeSend?: (request: JSONRPCRequest) => void,
+    onHTTPInfo?: (httpInfo: HTTPInfo) => void
   ): Promise<JSONRPCResponse> {
     if (!this.serverURL) {
       throw new Error('Not connected to any server. Please connect first.');
@@ -152,6 +153,19 @@ export class MCPClient {
         headers,
         body: JSON.stringify(request),
       });
+
+      // Capture HTTP headers
+      const responseHeaders: Record<string, string> = {};
+      response.headers.forEach((value, key) => {
+        responseHeaders[key] = value;
+      });
+
+      if (onHTTPInfo) {
+        onHTTPInfo({
+          requestHeaders: headers,
+          responseHeaders: responseHeaders
+        });
+      }
 
       if (!response.ok) {
         let errorBody = '';
@@ -272,7 +286,7 @@ export class MCPClient {
     }
   }
 
-  async sendCustomRequest(jsonString: string): Promise<JSONRPCResponse> {
+  async sendCustomRequest(jsonString: string, onHTTPInfo?: (httpInfo: HTTPInfo) => void): Promise<JSONRPCResponse> {
     if (!this.serverURL) {
       throw new Error('Not connected to any server. Please connect first.');
     }
@@ -307,6 +321,19 @@ export class MCPClient {
         headers,
         body: JSON.stringify(request)
       });
+
+      // Capture HTTP headers
+      const responseHeaders: Record<string, string> = {};
+      response.headers.forEach((value, key) => {
+        responseHeaders[key] = value;
+      });
+
+      if (onHTTPInfo) {
+        onHTTPInfo({
+          requestHeaders: headers,
+          responseHeaders: responseHeaders
+        });
+      }
 
       if (!response.ok) {
         let errorBody = '';

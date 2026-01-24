@@ -3,6 +3,7 @@ import { JSONTree } from 'react-json-tree';
 import ResponseSection from './components/ResponseSection';
 import EventList from './components/EventList';
 import ErrorBlock from './components/ErrorBlock';
+import HeadersSection from './components/HeadersSection';
 import { vscodeTheme } from './theme/jsonTreeTheme';
 import { ResponseData } from './types';
 
@@ -41,6 +42,10 @@ function App() {
   return (
     <div className="app-container">
       <h1>{data.title}</h1>
+
+      {data.httpInfo && (
+        <HeadersSection httpInfo={data.httpInfo} />
+      )}
 
       {data.request && (
         <ResponseSection title="Request">

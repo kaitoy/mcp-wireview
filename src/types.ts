@@ -1,4 +1,4 @@
-// JSON-RPC 2.0 型定義
+// JSON-RPC 2.0 type definitions
 export interface JSONRPCRequest {
   jsonrpc: '2.0';
   id: string | number;
@@ -19,7 +19,7 @@ export interface JSONRPCError {
   data?: any;
 }
 
-// MCP プロトコル型定義
+// MCP protocol type definitions
 export interface MCPClientInfo {
   name: string;
   version: string;
@@ -50,7 +50,7 @@ export interface InitializeResult {
   serverInfo: MCPServerInfo;
 }
 
-// Tool 型定義
+// Tool type definitions
 export interface MCPTool {
   name: string;
   description?: string;
@@ -79,7 +79,7 @@ export interface CallToolResult {
   isError?: boolean;
 }
 
-// Prompt 型定義
+// Prompt type definitions
 export interface MCPPrompt {
   name: string;
   description?: string;
@@ -94,7 +94,7 @@ export interface ListPromptsResult {
   prompts: MCPPrompt[];
 }
 
-// Resource 型定義
+// Resource type definitions
 export interface MCPResource {
   uri: string;
   name: string;
@@ -104,4 +104,14 @@ export interface MCPResource {
 
 export interface ListResourcesResult {
   resources: MCPResource[];
+}
+
+// HTTP Headers type definitions
+export interface HTTPHeaders {
+  [key: string]: string;
+}
+
+export interface HTTPInfo {
+  requestHeaders: HTTPHeaders;
+  responseHeaders: HTTPHeaders;
 }

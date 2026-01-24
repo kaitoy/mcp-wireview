@@ -81,6 +81,64 @@ h1 {
   margin-top: 15px;
 }
 
+/* HTTP Headers styles */
+.headers-container {
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+}
+
+.headers-group {
+  width: 100%;
+}
+
+.headers-subtitle {
+  font-size: 1em;
+  font-weight: bold;
+  margin: 0 0 10px 0;
+  color: var(--vscode-textLink-activeForeground);
+}
+
+.headers-table {
+  width: 100%;
+  border-collapse: collapse;
+  font-family: var(--vscode-editor-font-family);
+  font-size: var(--vscode-editor-font-size);
+}
+
+.headers-table thead {
+  background-color: var(--vscode-list-hoverBackground);
+}
+
+.headers-table th {
+  text-align: left;
+  padding: 8px 12px;
+  font-weight: bold;
+  border-bottom: 2px solid var(--vscode-panel-border);
+  color: var(--vscode-foreground);
+}
+
+.headers-table td {
+  padding: 6px 12px;
+  border-bottom: 1px solid var(--vscode-panel-border);
+}
+
+.headers-table tbody tr:hover {
+  background-color: var(--vscode-list-hoverBackground);
+}
+
+.header-key {
+  font-weight: 600;
+  color: var(--vscode-symbolIcon-keyForeground);
+  white-space: nowrap;
+  width: 30%;
+}
+
+.header-value {
+  color: var(--vscode-symbolIcon-stringForeground);
+  word-break: break-all;
+}
+
 /* react-json-tree overrides to match VSCode theme */
 ul.react-json-tree {
   background-color: transparent !important;

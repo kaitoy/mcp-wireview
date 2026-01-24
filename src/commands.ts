@@ -1,6 +1,6 @@
 import * as vscode from 'vscode';
 import { MCPClient } from './mcpClient';
-import { InitializeRequest } from './types';
+import { InitializeRequest, HTTPInfo } from './types';
 import { ResponseViewer } from './responseViewer';
 
 export class MCPCommands {
@@ -40,8 +40,8 @@ export class MCPCommands {
     }
   }
 
-  private showResponse(title: string, response: any, request?: any): void {
-    this.responseViewer.show(title, request, response, false);
+  private showResponse(title: string, response: any, request?: any, httpInfo?: HTTPInfo): void {
+    this.responseViewer.show(title, request, response, false, httpInfo);
     // Also keep output channel for reference
     this.outputChannel.clear();
     this.outputChannel.appendLine(`=== ${title} ===`);
@@ -189,8 +189,11 @@ export class MCPCommands {
     if (jsonString) {
       try {
         const request = JSON.parse(jsonString);
-        const response = await this.client.sendCustomRequest(jsonString);
-        this.showResponse('Custom Request', response, request);
+        let httpInfo: HTTPInfo | undefined;
+        const response = await this.client.sendCustomRequest(jsonString, (info) => {
+          httpInfo = info;
+        });
+        this.showResponse('Custom Request', response, request, httpInfo);
       } catch (error) {
         this.showError('Custom Request', error as Error, jsonString ? JSON.parse(jsonString) : undefined);
       }
@@ -215,6 +218,7 @@ export class MCPCommands {
       this.responseViewer.clear();
       let sentRequest: any;
       let eventCount = 0;
+      let httpInfo: HTTPInfo | undefined;
 
       const response = await this.client.sendRequest(
         'initialize',
@@ -226,13 +230,16 @@ export class MCPCommands {
         undefined,
         (request) => {
           sentRequest = request;
+        },
+        (info) => {
+          httpInfo = info;
         }
       );
 
       if (eventCount === 0) {
-        this.showResponse('Initialize Response', response, sentRequest);
+        this.showResponse('Initialize Response', response, sentRequest, httpInfo);
       } else {
-        this.responseViewer.showWithEvents('Initialize Response', sentRequest, response, eventCount, false);
+        this.responseViewer.showWithEvents('Initialize Response', sentRequest, response, eventCount, false, httpInfo);
       }
 
       // Update status bar after successful initialization
@@ -247,6 +254,7 @@ export class MCPCommands {
       this.responseViewer.clear();
       let sentRequest: any;
       let eventCount = 0;
+      let httpInfo: HTTPInfo | undefined;
 
       const response = await this.client.sendRequest(
         'tools/list',
@@ -258,13 +266,16 @@ export class MCPCommands {
         undefined,
         (request) => {
           sentRequest = request;
+        },
+        (info) => {
+          httpInfo = info;
         }
       );
 
       if (eventCount === 0) {
-        this.showResponse('Tools List Response', response, sentRequest);
+        this.showResponse('Tools List Response', response, sentRequest, httpInfo);
       } else {
-        this.responseViewer.showWithEvents('Tools List Response', sentRequest, response, eventCount, false);
+        this.responseViewer.showWithEvents('Tools List Response', sentRequest, response, eventCount, false, httpInfo);
       }
     } catch (error) {
       this.showError('List Tools', error as Error);
@@ -276,6 +287,7 @@ export class MCPCommands {
       this.responseViewer.clear();
       let sentRequest: any;
       let eventCount = 0;
+      let httpInfo: HTTPInfo | undefined;
 
       const response = await this.client.sendRequest(
         'prompts/list',
@@ -287,13 +299,16 @@ export class MCPCommands {
         undefined,
         (request) => {
           sentRequest = request;
+        },
+        (info) => {
+          httpInfo = info;
         }
       );
 
       if (eventCount === 0) {
-        this.showResponse('Prompts List Response', response, sentRequest);
+        this.showResponse('Prompts List Response', response, sentRequest, httpInfo);
       } else {
-        this.responseViewer.showWithEvents('Prompts List Response', sentRequest, response, eventCount, false);
+        this.responseViewer.showWithEvents('Prompts List Response', sentRequest, response, eventCount, false, httpInfo);
       }
     } catch (error) {
       this.showError('List Prompts', error as Error);
@@ -305,6 +320,7 @@ export class MCPCommands {
       this.responseViewer.clear();
       let sentRequest: any;
       let eventCount = 0;
+      let httpInfo: HTTPInfo | undefined;
 
       const response = await this.client.sendRequest(
         'resources/list',
@@ -316,13 +332,16 @@ export class MCPCommands {
         undefined,
         (request) => {
           sentRequest = request;
+        },
+        (info) => {
+          httpInfo = info;
         }
       );
 
       if (eventCount === 0) {
-        this.showResponse('Resources List Response', response, sentRequest);
+        this.showResponse('Resources List Response', response, sentRequest, httpInfo);
       } else {
-        this.responseViewer.showWithEvents('Resources List Response', sentRequest, response, eventCount, false);
+        this.responseViewer.showWithEvents('Resources List Response', sentRequest, response, eventCount, false, httpInfo);
       }
     } catch (error) {
       this.showError('List Resources', error as Error);
@@ -365,6 +384,7 @@ export class MCPCommands {
       this.responseViewer.clear();
       let sentRequest: any;
       let eventCount = 0;
+      let httpInfo: HTTPInfo | undefined;
 
       const response = await this.client.sendRequest(
         'tools/call',
@@ -376,13 +396,16 @@ export class MCPCommands {
         undefined,
         (request) => {
           sentRequest = request;
+        },
+        (info) => {
+          httpInfo = info;
         }
       );
 
       if (eventCount === 0) {
-        this.showResponse(`Call Tool: ${toolName}`, response, sentRequest);
+        this.showResponse(`Call Tool: ${toolName}`, response, sentRequest, httpInfo);
       } else {
-        this.responseViewer.showWithEvents(`Call Tool: ${toolName}`, sentRequest, response, eventCount, false);
+        this.responseViewer.showWithEvents(`Call Tool: ${toolName}`, sentRequest, response, eventCount, false, httpInfo);
       }
     } catch (error) {
       this.showError('Call Tool', error as Error);

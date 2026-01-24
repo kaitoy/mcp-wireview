@@ -1,3 +1,12 @@
+export interface HTTPHeaders {
+  [key: string]: string;
+}
+
+export interface HTTPInfo {
+  requestHeaders: HTTPHeaders;
+  responseHeaders: HTTPHeaders;
+}
+
 export interface ResponseData {
   title: string;
   request?: any;
@@ -5,6 +14,7 @@ export interface ResponseData {
   events?: Array<{ index: number; data: any }>;
   eventCount?: number;
   isError: boolean;
+  httpInfo?: HTTPInfo;
 }
 
 export interface ResponseSectionProps {

@@ -1,6 +1,7 @@
 import * as vscode from 'vscode';
 import * as path from 'path';
 import * as fs from 'fs';
+import { HTTPInfo } from './types';
 
 export class ResponseViewer {
   private panel: vscode.WebviewPanel | undefined;
@@ -8,13 +9,13 @@ export class ResponseViewer {
 
   constructor(private context: vscode.ExtensionContext) {}
 
-  public show(title: string, request?: any, response?: any, isError: boolean = false): void {
+  public show(title: string, request?: any, response?: any, isError: boolean = false, httpInfo?: HTTPInfo): void {
     if (!this.panel) {
       this.createPanel();
     }
 
     this.panel!.title = title;
-    this.panel!.webview.html = this.getWebviewContent(title, request, response, undefined, isError);
+    this.panel!.webview.html = this.getWebviewContent(title, request, response, undefined, isError, httpInfo);
     this.panel!.reveal(vscode.ViewColumn.Two);
   }
 
@@ -31,7 +32,8 @@ export class ResponseViewer {
     request: any,
     finalResponse: any,
     eventCount: number,
-    isError: boolean = false
+    isError: boolean = false,
+    httpInfo?: HTTPInfo
   ): void {
     if (!this.panel) {
       this.createPanel();
@@ -48,7 +50,8 @@ export class ResponseViewer {
       request,
       finalResponse,
       { events: eventsData, eventCount },
-      isError
+      isError,
+      httpInfo
     );
     this.panel!.reveal(vscode.ViewColumn.Two);
   }
@@ -82,7 +85,8 @@ export class ResponseViewer {
     request: any,
     response: any,
     eventsInfo?: { events: Array<{ index: number; data: any }>; eventCount: number },
-    isError: boolean = false
+    isError: boolean = false,
+    httpInfo?: HTTPInfo
   ): string {
     const webviewPath = path.join(this.context.extensionPath, 'out', 'webview');
     const indexPath = path.join(webviewPath, 'index.html');
@@ -120,7 +124,8 @@ export class ResponseViewer {
       response,
       events: eventsInfo?.events,
       eventCount: eventsInfo?.eventCount,
-      isError
+      isError,
+      httpInfo
     };
 
     // Encode initial data in a meta tag to avoid CSP inline script violation
